@@ -223,21 +223,8 @@ method.
 sub standard_code_block {
   my ($self, $html) = @_;
 
-  my @lines = split m{<br(?:\s*/)>|\n}, $html;
-
-  # The leading nbsp below, in generating $code, is to try to get indentation
-  # to appear in feed readers, which to not respect white-space:pre or the pre
-  # element. The use of <br> instead of newlines is for the same reason.
-  # -- rjbs, 2009-12-10
-  my $nums  = join "<br />", map {; "$_:&nbsp;" } (1 .. @lines);
-  my $code  = join "<br />",
-              map {; s/^(\s+)/'&nbsp;' x length $1/me; $_ }
-              @lines;
-
-  # Another stupid hack: the <code> blocks below force monospace font.  It
-  # can't wrap the whole table, though, because it would cause styling issues
-  # in the rendered XHTML. -- rjbs, 2009-12-10
-  $html = "<pre><code class=\"code-listing\">$code</code></pre>";
+  my $code = $html;
+  $html = "<pre><code class='code-listing'>$code</code></pre>";
 
   return $html;
 }
